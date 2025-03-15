@@ -1,0 +1,96 @@
+diff --git a/CPP/Makefile b/CPP/Makefile
+index 455398d..4b49b3e 100644
+--- a/CPP/Makefile
++++ b/CPP/Makefile
+@@ -10,7 +10,7 @@ all: cpp
+ # Older Linux platform users may need libbsd-deevel / libbsd-dev
+ # and to uncomment -lbsd if they do not have glibc 2.38 or higher
+ cpp: $(OBJ)
+-	$(CC) $(CFLAGS) $(CCOPTS) $(OBJ) -o cpp #-lbsd
++	$(CC) $(CFLAGS) $(CCOPTS) $(OBJ) -o cpp -lbsd
+ 
+ clean:
+ 	rm -f *.o cpp *~
+diff --git a/Makefile b/Makefile
+index a71852a..348358b 100644
+--- a/Makefile
++++ b/Makefile
+@@ -10,7 +10,7 @@ all: CPP cc cc0 \
+      copt \
+      support6303 support6502 support65c816 support6800 support6803 \
+      support6809 support68hc11 support8070 support8080 support8085 supportz80 \
+-     supportz8 supportsuper8 supportee200 supportnova supportnova3 supporttms7000 \
++     supportz8 supportsuper8 supportee200 supportnova supportnova3 \
+      test
+ 
+ bootstuff: CPP cc cc0 \
+@@ -24,10 +24,10 @@ bootstuff: CPP cc cc0 \
+      cc2.hc08 cc2.gb \
+      copt
+ 
+-.PHONY: support6303 support6502 support65c816 support6800 support6803 \
++.PHONY: support6303 support65c816 support6800 support6803 \
+ 	support6809 support68hc11 support8070 support8080 support8085 \
+ 	supportsuper8 supportz8 supportz80 supportee200 supportnova \
+-	supportnova3 supporttms7000 test CPP
++	supportnova3 test CPP
+ 
+ CCROOT ?=/opt/fcc/
+ 
+@@ -202,9 +202,6 @@ cc2.gb:		$(OBJS21)
+ support6303:
+ 	(cd support6303; make)
+ 
+-support6502:
+-	(cd support6502; make)
+-
+ support65c816:
+ 	(cd support65c816; make)
+ 
+@@ -241,9 +238,6 @@ supportnova3:
+ supportsuper8:
+ 	(cd supportsuper8; make)
+ 
+-supporttms7000:
+-	(cd supporttms7000; make)
+-
+ supportz8:
+ 	(cd supportz8; make)
+ 
+@@ -275,7 +269,6 @@ clean:
+ 	rm -f cc1.gb cc2.gb
+ 	rm -f *~ *.o
+ 	(cd support6303; make clean)
+-	(cd support6502; make clean)
+ 	(cd support65c816; make clean)
+ 	(cd support6800; make clean)
+ 	(cd support6803; make clean)
+@@ -287,7 +280,6 @@ clean:
+ 	(cd supportnova3; make clean)
+ 	(cd supportsuper8; make clean)
+ 	(cd support8085; make clean)
+-	(cd supporttms7000; make clean)
+ 	(cd supportz80; make clean)
+ 	(cd supportz8; make clean)
+ 	(cd test; make clean)
+@@ -442,10 +434,6 @@ bootinst:
+ #	Install the support libraries
+ #
+ libinst:
+-	cp support6502/crt0.o $(CCROOT)/lib/6502/
+-	cp support6502/lib6502.a $(CCROOT)/lib/6502/lib6502.a
+-#	cp support6502/lib65c02.a $(CCROOT)/lib/6502/lib65c02.a
+-	ar cq $(CCROOT)/lib/6502/libc.a
+ 	cp support65c816/crt0.o $(CCROOT)/lib/65c816/
+ 	cp support65c816/lib65c816.a $(CCROOT)/lib/65c816/lib65c816.a
+ 	ar cq $(CCROOT)/lib/65c816/libc.a
+@@ -492,9 +480,6 @@ libinst:
+ 	cp supportsuper8/include/*.h $(CCROOT)/lib/super8/include/
+ 	cp supportsuper8/libsuper8.a $(CCROOT)/lib/super8/libsuper8.a
+ 	ar cq $(CCROOT)/lib/super8/libc.a
+-	cp supporttms7000/crt0.o $(CCROOT)/lib/tms7000/
+-	cp supporttms7000/include/*.h $(CCROOT)/lib/tms7000/include/
+-	cp supporttms7000/libtms7000.a $(CCROOT)/lib/tms7000/libtms7000.a
+ 	cp support8080/crt0.o $(CCROOT)/lib/8080/
+ 	cp supportz80/crt0.o $(CCROOT)/lib/z80/
+ 	cp supportz80/include/*.h $(CCROOT)/lib/z80/include/
